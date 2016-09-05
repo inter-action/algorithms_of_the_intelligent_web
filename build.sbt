@@ -34,4 +34,4 @@ scalacOptions ++= Seq(
     "-Ywarn-dead-code",
     "-Xfuture")
 
-initialCommands := "import com.github.interaction.algorithms_of_the_intelligent_web._"
+initialCommands := "import iweb.ch04.similarity._"
