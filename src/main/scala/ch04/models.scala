@@ -2,20 +2,23 @@ package iweb.ch04.models
 
 import iweb.ch04.similarity.EuclideanDistance
 
+import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable
-
+import scala.reflect.ClassTag
 
 case class Attribute[T](name: String, value: T)
 
 object Attribute{
   def createAttributes[T](attrValues: Array[T]): Array[Attribute[T]] =
-//    for (idx <- attrValues.indices) yield Attribute("a-"+idx, attrValues(idx))
     attrValues.zipWithIndex.map{ case (t, idx) => Attribute("a-"+idx, t)}
 
 
   def getNames[T](attrs: Array[Attribute[T]]): Array[String] = attrs.map(_.name)
 
-  def getValues[T](attrs: Array[Attribute[T]]): Array[T] = attrs.map(_.value)
+  // this just suggest using Array in scala is pretty much bad idea
+  // http://stackoverflow.com/questions/12837799/scala-array-map-returns-arrayseq
+  // painful as fuck !, had to hate scala this way
+  def getValues[T: ClassTag](attrs: Array[Attribute[T]]): Array[T] = attrs.map(_.value)
 }
 
 
@@ -23,7 +26,7 @@ trait DataPoint[T]{
   val label: String
   val attrs: Array[Attribute[T]]
   val attrNames: Array[String] = Attribute.getNames(attrs)
-  val values: Array[T] = Attribute.getValues(attrs)
+  val values: Array[T]
 
   def getR: Double
 
@@ -34,29 +37,29 @@ trait DataPoint[T]{
 }
 
 case class NumbericDataPoint(label: String, attrs: Array[Attribute[Double]]) extends DataPoint[Double]{
+  override val values = Attribute.getValues(attrs)
   override def getR: Double = EuclideanDistance.getDistance(new Array[Double](attrs.length), values)
-
 }
 
 
 
 // todo: whether change elements to immutable objects
-case class Cluster(
+case class Cluster[T <: DataPoint[_]](
                     label: String = "",
-                    elements: scala.collection.Set[DataPoint] = mutable.LinkedHashSet.empty[DataPoint]){
+                    elements: scala.collection.mutable.Set[T] = mutable.LinkedHashSet.empty[T]){
 
 
-  def this(label: String, elements: Seq[DataPoint]){
-    this(label, mutable.LinkedHashSet.empty[DataPoint] ++ elements)
+  def this(label: String, elements: Seq[T]){
+    this(label, mutable.LinkedHashSet.empty[T] ++ elements)
   }
 
-  def this(c1: Cluster, c2: Cluster){
+  def this(c1: Cluster[T], c2: Cluster[T]){
     this("", c1.elements ++ c2.elements)
   }
 
-  def this(c1: Cluster*){
+  def this(c1: Cluster[T]*){
     this("",
-      c1.foldLeft(mutable.LinkedHashSet.empty[DataPoint]){ (acc, c) =>
+      c1.foldLeft(mutable.LinkedHashSet.empty[T]){ (acc, c) =>
         acc ++ c.elements
       }
     )
@@ -68,19 +71,19 @@ case class Cluster(
 
   // def copy: Cluster ?, elements need to be copied?
 
-  def add(cluster: Cluster):Unit = {
+  def add(cluster: Cluster[T]):Unit = {
     elements ++= cluster.elements
   }
 
-  def add(e: DataPoint): Unit ={
+  def add(e: T): Unit ={
     elements += e
   }
 
-  def contains(c: Cluster) = elements.intersect(c.elements).size != 0
+  def contains(c: Cluster[T]) = elements.intersect(c.elements).size != 0
 
-  def contains(e: DataPoint) = elements.contains(e)
+  def contains(e: T) = elements.contains(e)
 
-  def getElements: mutable.Set[DataPoint] = mutable.LinkedHashSet.empty[DataPoint] ++ elements
+  def getElements: mutable.Set[T] = mutable.LinkedHashSet.empty[T] ++ elements
 
   override def toString = s"${elements.mkString(",\n")} \n ${label}"
 
