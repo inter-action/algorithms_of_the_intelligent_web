@@ -19,8 +19,30 @@ Generic Array with Map return ArraySeq
 
 
 
+### Notes
+
+* in chapter 04's code, the container i used basically are mutable, maybe i should use immutable
+container instead, could save me lots of headache of copying things
 
 
+
+
+### Pain in the ass working with scala types :(
+
+    // can `U <: DataPoint[T]` not be propage to outer user/enclosing class ?
+    trait DataPoint[T]{
+
+    case class Cluster[T, U <: DataPoint[T]](
+
+    class ClusterSet[T, U <: DataPoint[T]] {
+      type C = Cluster[T, U]
+
+
+    // also if you write this, compile gonna failed, you will be warned by compiler
+    Cluster("test-1", elements) 
+    
+    // instead you have to tell complier more about types
+    Cluster[Double, NumbericDataPoint] ("test-1", elements)
 
 
 

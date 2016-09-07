@@ -44,22 +44,18 @@ case class NumbericDataPoint(label: String, attrs: Array[Attribute[Double]]) ext
 
 
 // todo: whether change elements to immutable objects
-case class Cluster[T <: DataPoint[_]](
+case class Cluster[T, U <: DataPoint[T]](
                     label: String = "",
-                    elements: scala.collection.mutable.Set[T] = mutable.LinkedHashSet.empty[T]){
+                    elements: scala.collection.mutable.Set[U] = mutable.LinkedHashSet.empty[U]){
 
 
-  def this(label: String, elements: Seq[T]){
-    this(label, mutable.LinkedHashSet.empty[T] ++ elements)
+  def this(label: String, elements: Seq[U]){
+    this(label, mutable.LinkedHashSet.empty[U] ++ elements)
   }
 
-  def this(c1: Cluster[T], c2: Cluster[T]){
-    this("", c1.elements ++ c2.elements)
-  }
-
-  def this(c1: Cluster[T]*){
+  def this(c1: Cluster[T, U]*){
     this("",
-      c1.foldLeft(mutable.LinkedHashSet.empty[T]){ (acc, c) =>
+      c1.foldLeft(mutable.LinkedHashSet.empty[U]){ (acc, c) =>
         acc ++ c.elements
       }
     )
@@ -69,22 +65,24 @@ case class Cluster[T <: DataPoint[_]](
 
   def getDimensionCount = if (elements.isEmpty) 0 else elements.iterator.next().getAttributeCount
 
-  // def copy: Cluster ?, elements need to be copied?
-
-  def add(cluster: Cluster[T]):Unit = {
+  def add(cluster: Cluster[T, U]):Unit = {
     elements ++= cluster.elements
   }
 
-  def add(e: T): Unit ={
+  def add(e: U): Unit ={
     elements += e
   }
 
-  def contains(c: Cluster[T]) = elements.intersect(c.elements).size != 0
+  def contains(c: Cluster[T, U]) = elements.intersect(c.elements).size != 0
 
-  def contains(e: T) = elements.contains(e)
+  def contains(e: U) = elements.contains(e)
 
-  def getElements: mutable.Set[T] = mutable.LinkedHashSet.empty[T] ++ elements
+  def getElements: mutable.Set[DataPoint[T]] = mutable.LinkedHashSet.empty[DataPoint[T]] ++ elements
 
   override def toString = s"${elements.mkString(",\n")} \n ${label}"
+
+  // def copy: Cluster ?, elements need to be copied?
+  // can copy be overrided ?
+  override def clone(): Cluster[T, U] = Cluster(label, mutable.LinkedHashSet.empty ++ elements)
 
 }
