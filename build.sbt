@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   "org.scalactic" %% "scalactic" % "3.0.0",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
-
+// http://www.scala-lang.org/files/archive/nightly/docs-2.10.2/manual/html/scalac.html
+// http://blog.threatstack.com/useful-scalac-options-for-better-scala-development-part-1
 scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",
@@ -29,9 +30,11 @@ scalacOptions ++= Seq(
     "-language:experimental.macros",
     "-unchecked",
     "-Xfatal-warnings",
-    "-Xlint",
+    "-Xlint",// Enable recommended additional warnings.
     "-Yinline-warnings",
     "-Ywarn-dead-code",
-    "-Xfuture")
+    "-Xfuture",
+    "-Yno-adapted-args"
+)
 
 initialCommands := "import iweb.ch04.similarity._"
