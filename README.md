@@ -29,7 +29,7 @@ container instead, could save me lots of headache of copying things
 
 ### Pain in the ass working with scala types :(
 
-    // can `U <: DataPoint[T]` not be propage to outer user/enclosing class ?
+    // can `U <: DataPoint[T]` not bubble to outer user/enclosing class ?
     trait DataPoint[T]{
 
     case class Cluster[T, U <: DataPoint[T]](

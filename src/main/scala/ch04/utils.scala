@@ -46,8 +46,10 @@ class ObjectToIndexMapping[T]{
       objectMapping.put(obj, nextIndex)
       indexMapping.put(nextIndex, obj)
       nextIndex += 1
+      nextIndex - 1
+    }else{
+      idx.get
     }
-    return idx.get
   }
 }
 

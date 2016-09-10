@@ -93,8 +93,8 @@ class Dendrogram[T, U <: DataPoint[T]](levelLabelName: String) {
   }
 
   def printAll(): Unit ={
-    entryMap.foreach( e => print(e._1))
+    // print with order
+    entryMap.toSeq.sortBy( _._1 ).foreach(e=> print(e._1) )
   }
-
 
 }
