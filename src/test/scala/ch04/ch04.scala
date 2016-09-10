@@ -1,6 +1,6 @@
 package iweb.ch04
 
-import iweb.ch04.models.{Attribute, NumbericDataPoint, Cluster}
+import iweb.ch04.models.{Attribute, NumericDataPoint, Cluster}
 import iweb.ch04.utils.TermFrequencyBuilder
 import org.scalatest.{Matchers, FlatSpec}
 
@@ -30,20 +30,20 @@ class TermFrequencyBuilderSpec extends FlatSpec with Matchers {
 class OtherSpec extends FlatSpec with Matchers {
   "Cluster copy " should "also copy its elements" in {
     val elements = mutable.Set(
-      NumbericDataPoint("cat-1", Array(
+      NumericDataPoint("cat-1", Array(
         Attribute("height", 30),
         Attribute("weight", 20)
       )),
 
-      NumbericDataPoint("cat-2", Array(
+      NumericDataPoint("cat-2", Array(
         Attribute("height", 40),
         Attribute("weight", 30)
       ))
     )
 
-    val cluster = Cluster[Double, NumbericDataPoint] ("test-1", elements)
+    val cluster = Cluster[Double, NumericDataPoint] ("test-1", elements)
     val ncluster = cluster.clone()
-    ncluster.elements += NumbericDataPoint("cat-3", Array(
+    ncluster.elements += NumericDataPoint("cat-3", Array(
       Attribute("height", 30),
       Attribute("weight", 20)
     ))

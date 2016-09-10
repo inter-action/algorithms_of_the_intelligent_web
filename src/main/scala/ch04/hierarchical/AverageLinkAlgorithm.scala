@@ -1,22 +1,22 @@
 package iweb.ch04.similarity.hierarchical
 
-import iweb.ch04.models.{Attribute, Cluster, NumbericDataPoint}
+import iweb.ch04.models.{Attribute, Cluster, NumericDataPoint}
 import iweb.ch04.utils.ObjectToIndexMapping
 
 class AverageLinkAlgorithm(
-                            elements: Array[NumbericDataPoint],
+                            elements: Array[NumericDataPoint],
                             adjacencyMatrix: Array[Array[Double]]) {
 
-  private val allClusters = new ClusterSet[Double, NumbericDataPoint]()
+  private val allClusters = new ClusterSet[Double, NumericDataPoint]()
 
 
 
-  def cluster(): Dendrogram[Double, NumbericDataPoint] = {
-    val dnd = new Dendrogram[Double, NumbericDataPoint]("Distance")
+  def cluster(): Dendrogram[Double, NumericDataPoint] = {
+    val dnd = new Dendrogram[Double, NumericDataPoint]("Distance")
     var d = 0.0
 
     elements.foreach { e=>
-      val c = new Cluster[Double, NumbericDataPoint]()
+      val c = new Cluster[Double, NumericDataPoint]()
       c.add(e)
       allClusters.add(c)
     }
@@ -42,7 +42,7 @@ class AverageLinkAlgorithm(
 
   private def mergeCluster(distanceThreshold: Double): Unit ={
 
-    val idxMapping = new ObjectToIndexMapping[Cluster[Double, NumbericDataPoint]]
+    val idxMapping = new ObjectToIndexMapping[Cluster[Double, NumericDataPoint]]
     val alength = adjacencyMatrix.length
 
     val nClusters = allClusters.size
@@ -83,7 +83,7 @@ class AverageLinkAlgorithm(
           allClusters.remove(ci)
           allClusters.remove(cj)
 
-          val _new = new Cluster[Double, NumbericDataPoint](ci, cj)
+          val _new = new Cluster[Double, NumericDataPoint](ci, cj)
           allClusters.add(_new)
           merged(i) = true
           merged(j) = true
@@ -96,12 +96,12 @@ class AverageLinkAlgorithm(
 
 object TestAverageLinkAlgorithm extends App{
 
-  val elements = new Array[NumbericDataPoint](5)
-  elements(0) = new NumbericDataPoint("A", Array.empty[Attribute[Double]])
-  elements(1) = new NumbericDataPoint("B", Array.empty[Attribute[Double]])
-  elements(2) = new NumbericDataPoint("C", Array.empty[Attribute[Double]])
-  elements(3) = new NumbericDataPoint("D", Array.empty[Attribute[Double]])
-  elements(4) = new NumbericDataPoint("E", Array.empty[Attribute[Double]])
+  val elements = new Array[NumericDataPoint](5)
+  elements(0) = new NumericDataPoint("A", Array.empty[Attribute[Double]])
+  elements(1) = new NumericDataPoint("B", Array.empty[Attribute[Double]])
+  elements(2) = new NumericDataPoint("C", Array.empty[Attribute[Double]])
+  elements(3) = new NumericDataPoint("D", Array.empty[Attribute[Double]])
+  elements(4) = new NumericDataPoint("E", Array.empty[Attribute[Double]])
 
 
   val ajs = Array(

@@ -36,7 +36,7 @@ trait DataPoint[T]{
   override def toString = s"${label} ( ${attrs.map(_.toString()).mkString("\n")} )"
 }
 
-case class NumbericDataPoint(label: String, attrs: Array[Attribute[Double]]) extends DataPoint[Double]{
+case class NumericDataPoint(label: String, attrs: Array[Attribute[Double]]) extends DataPoint[Double]{
   override val values = Attribute.getValues(attrs)
   override def getR: Double = EuclideanDistance.getDistance(new Array[Double](attrs.length), values)
 }

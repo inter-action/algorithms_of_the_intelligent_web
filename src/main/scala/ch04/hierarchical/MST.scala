@@ -1,21 +1,21 @@
 package iweb.ch04.similarity.hierarchical
 
-import iweb.ch04.models.{Attribute, Cluster, NumbericDataPoint}
+import iweb.ch04.models.{Attribute, Cluster, NumericDataPoint}
 
 
 class MSTSingleLinkAlgorithm(
-                            elements: Array[NumbericDataPoint],
-                            adjacencyMatrix: Array[Array[Double]]
+                              elements: Array[NumericDataPoint],
+                              adjacencyMatrix: Array[Array[Double]]
                             ){
-  private val allClusters = new ClusterSet[Double, NumbericDataPoint]()
+  private val allClusters = new ClusterSet[Double, NumericDataPoint]()
   private var mst: Array[Array[Double]] = null
 
 
-  def cluster(): Dendrogram[Double, NumbericDataPoint] ={
+  def cluster(): Dendrogram[Double, NumericDataPoint] ={
     mst = MST.buildMST(adjacencyMatrix)
 
     elements.foreach( allClusters.add(_) )
-    val dnd = new Dendrogram[Double, NumbericDataPoint]("Distance")
+    val dnd = new Dendrogram[Double, NumericDataPoint]("Distance")
     var d = 0.0
     var lastDndLevel = dnd.addLevel(d.toString, allClusters.getAllCluster.toSeq)
     var previousD = d
@@ -58,7 +58,7 @@ class MSTSingleLinkAlgorithm(
       val c2 = allClusters.findClusterByElement(elements(minJ)).get
       allClusters.remove(c1)
       allClusters.remove(c2)
-      allClusters.add(new Cluster[Double, NumbericDataPoint](c1, c2))
+      allClusters.add(new Cluster[Double, NumericDataPoint](c1, c2))
       result = minWeight
       // remove link. Using -1 because 0 is a valid distance.
       mst(minI)(minJ) = -1
@@ -140,12 +140,12 @@ object MST {
 
 
 object TestMSTSingleLinkAlgorithm extends App{
-  val elements = new Array[NumbericDataPoint](5)
-  elements(0) = new NumbericDataPoint("A", Array.empty[Attribute[Double]])
-  elements(1) = new NumbericDataPoint("B", Array.empty[Attribute[Double]])
-  elements(2) = new NumbericDataPoint("C", Array.empty[Attribute[Double]])
-  elements(3) = new NumbericDataPoint("D", Array.empty[Attribute[Double]])
-  elements(4) = new NumbericDataPoint("E", Array.empty[Attribute[Double]])
+  val elements = new Array[NumericDataPoint](5)
+  elements(0) = new NumericDataPoint("A", Array.empty[Attribute[Double]])
+  elements(1) = new NumericDataPoint("B", Array.empty[Attribute[Double]])
+  elements(2) = new NumericDataPoint("C", Array.empty[Attribute[Double]])
+  elements(3) = new NumericDataPoint("D", Array.empty[Attribute[Double]])
+  elements(4) = new NumericDataPoint("E", Array.empty[Attribute[Double]])
 
 
   val ajs = Array(
