@@ -14,7 +14,13 @@ class ClusterSet[T, U <: DataPoint[T]] {
 
   def getAllCluster: mutable.Set[C] = allClusters.map(_.clone())
 
-  def add(c: C) = allClusters.add(c)
+  def add(c: C): Unit = allClusters.add(c)
+
+  def add(d: U): Unit = {
+    val c = new Cluster[T, U]
+    c.add(d)
+    add(c)
+  }
 
   def remove(c: C) = allClusters.remove(c)
 
