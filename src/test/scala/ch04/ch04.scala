@@ -51,4 +51,16 @@ class OtherSpec extends FlatSpec with Matchers {
 
     cluster.elements.size shouldBe(2)
   }
+
+  "NumericDataPoint copy " should "also copy its attributes value" in {
+    val dp = NumericDataPoint("cat-1", Array(
+      Attribute("height", 30),
+      Attribute("weight", 20)
+    ))
+
+    val ndp = dp.clone.copy("new")
+    ndp.attrs(0) = Attribute("height", 40)
+
+    dp.attrs(0).value shouldBe 30
+  }
 }

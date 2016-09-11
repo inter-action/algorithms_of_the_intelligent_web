@@ -37,8 +37,13 @@ trait DataPoint[T]{
 }
 
 case class NumericDataPoint(label: String, attrs: Array[Attribute[Double]]) extends DataPoint[Double]{
-  override val values = Attribute.getValues(attrs)
+  def this(label: String, values: Array[Double]){
+    this(label, Attribute.createAttributes(values))
+  }
+
+  override val values:Array[Double] = Attribute.getValues(attrs)
   override def getR: Double = EuclideanDistance.getDistance(new Array[Double](attrs.length), values)
+  override def clone(): NumericDataPoint = NumericDataPoint(label, attrs.map( _.copy[Double]() ))
 }
 
 
