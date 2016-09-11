@@ -5,8 +5,8 @@ import iweb.ch04.models.{DataPoint, Cluster}
 import scala.collection.mutable
 
 
-class ClusterSet[T, U <: DataPoint[T]] {
-  type C = Cluster[T, U]
+class ClusterSet[U <: DataPoint] {
+  type C = Cluster[U]
 
   private val allClusters: mutable.Set[C] = mutable.Set.empty[C]
 
@@ -17,7 +17,7 @@ class ClusterSet[T, U <: DataPoint[T]] {
   def add(c: C): Unit = allClusters.add(c)
 
   def add(d: U): Unit = {
-    val c = new Cluster[T, U]
+    val c = new C
     c.add(d)
     add(c)
   }
@@ -28,19 +28,19 @@ class ClusterSet[T, U <: DataPoint[T]] {
 }
 
 
-class Dendrogram[T, U <: DataPoint[T]](levelLabelName: String) {
-  private val entryMap = mutable.Map.empty[Int, ClusterSet[T, U]]
+class Dendrogram[U <: DataPoint](levelLabelName: String) {
+  private val entryMap = mutable.Map.empty[Int, ClusterSet[U]]
   private val labelMap = mutable.Map.empty[Int, String]
   private var nextLevel = 1
 
-  def addLevel(label: String, cluster: Cluster[T, U]): Int = addLevel(label, Seq(cluster))
+  def addLevel(label: String, cluster: Cluster[U]): Int = addLevel(label, Seq(cluster))
 
 
   /**
     * Creates a new dendrogram level using copies of provided clusters.
   */
-  def addLevel(label: String, clusters: Seq[Cluster[T, U]]) = {
-    val clusterSet = new ClusterSet[T, U]
+  def addLevel(label: String, clusters: Seq[Cluster[U]]) = {
+    val clusterSet = new ClusterSet[U]
 
     clusters.foreach( clusterSet.add(_) )
 
@@ -62,8 +62,8 @@ class Dendrogram[T, U <: DataPoint[T]](levelLabelName: String) {
   * @param clusters clusters for the level.
   * @return
   */
-  def setLevel(level: Int, label: String, clusters: Seq[Cluster[T, U]]): Unit ={
-    val clusterSet = new ClusterSet[T, U]
+  def setLevel(level: Int, label: String, clusters: Seq[Cluster[U]]): Unit ={
+    val clusterSet = new ClusterSet[U]
 
     clusters.foreach(e=> clusterSet.add( e.clone() ) )
 
@@ -79,7 +79,7 @@ class Dendrogram[T, U <: DataPoint[T]](levelLabelName: String) {
 
   def getLabelForLevel(level: Int): Option[String] = labelMap.get(level)
 
-  def getClustersForLevel(level: Int): Option[Seq[Cluster[T, U]]] =
+  def getClustersForLevel(level: Int): Option[Seq[Cluster[U]]] =
     entryMap.get(level).map(_.getAllCluster.toSeq)
 
   //_.getAllCluster.toSeq

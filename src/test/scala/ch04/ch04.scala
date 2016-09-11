@@ -41,7 +41,7 @@ class OtherSpec extends FlatSpec with Matchers {
       ))
     )
 
-    val cluster = Cluster[Double, NumericDataPoint] ("test-1", elements)
+    val cluster = Cluster[NumericDataPoint] ("test-1", elements)
     val ncluster = cluster.clone()
     ncluster.elements += NumericDataPoint("cat-3", Array(
       Attribute("height", 30),

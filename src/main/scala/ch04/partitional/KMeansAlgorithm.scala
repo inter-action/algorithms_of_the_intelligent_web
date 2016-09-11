@@ -20,7 +20,7 @@ class KMeansAlgorithm(
                        allCentroids: Array[NumericDataPoint],
                        dataPoints: Array[NumericDataPoint]) {
   private val k = allCentroids.length
-  private val allClusters = new Array[Cluster[Double, NumericDataPoint]](k)
+  private val allClusters = new Array[Cluster[NumericDataPoint]](k)
 
   def this(k: Int, dataPoints: Array[NumericDataPoint]) {
     this(KMeansAlgorithm.pickInitialCentroids(k, dataPoints), dataPoints)
@@ -41,7 +41,7 @@ class KMeansAlgorithm(
       }
 
       clusters.zipWithIndex.foreach { case (e: mutable.HashSet[NumericDataPoint], idx: Int) =>
-        allClusters(idx) = Cluster[Double, NumericDataPoint](s"cluster ${idx}", e)
+        allClusters(idx) = Cluster[NumericDataPoint](s"cluster ${idx}", e)
       }
 
       centroidsChanged = false
@@ -103,7 +103,7 @@ class KMeansAlgorithm(
   }
 
   // return 在这个cluster中每个特征点的平均值
-  private def findCentroid(c: Cluster[Double, NumericDataPoint]): Array[Double] = {
+  private def findCentroid(c: Cluster[NumericDataPoint]): Array[Double] = {
     if (c.size == 0) return Array(0.0)
 
     val d = c.getDimensionCount

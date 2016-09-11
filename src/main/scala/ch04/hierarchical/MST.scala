@@ -7,15 +7,15 @@ class MSTSingleLinkAlgorithm(
                               elements: Array[NumericDataPoint],
                               adjacencyMatrix: Array[Array[Double]]
                             ){
-  private val allClusters = new ClusterSet[Double, NumericDataPoint]()
+  private val allClusters = new ClusterSet[NumericDataPoint]()
   private var mst: Array[Array[Double]] = null
 
 
-  def cluster(): Dendrogram[Double, NumericDataPoint] ={
+  def cluster(): Dendrogram[NumericDataPoint] ={
     mst = MST.buildMST(adjacencyMatrix)
 
     elements.foreach( allClusters.add(_) )
-    val dnd = new Dendrogram[Double, NumericDataPoint]("Distance")
+    val dnd = new Dendrogram[NumericDataPoint]("Distance")
     var d = 0.0
     var lastDndLevel = dnd.addLevel(d.toString, allClusters.getAllCluster.toSeq)
     var previousD = d
@@ -58,7 +58,7 @@ class MSTSingleLinkAlgorithm(
       val c2 = allClusters.findClusterByElement(elements(minJ)).get
       allClusters.remove(c1)
       allClusters.remove(c2)
-      allClusters.add(new Cluster[Double, NumericDataPoint](c1, c2))
+      allClusters.add(new Cluster[NumericDataPoint](c1, c2))
       result = minWeight
       // remove link. Using -1 because 0 is a valid distance.
       mst(minI)(minJ) = -1

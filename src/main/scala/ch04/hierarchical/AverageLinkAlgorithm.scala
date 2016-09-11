@@ -7,16 +7,16 @@ class AverageLinkAlgorithm(
                             elements: Array[NumericDataPoint],
                             adjacencyMatrix: Array[Array[Double]]) {
 
-  private val allClusters = new ClusterSet[Double, NumericDataPoint]()
+  private val allClusters = new ClusterSet[NumericDataPoint]()
 
 
 
-  def cluster(): Dendrogram[Double, NumericDataPoint] = {
-    val dnd = new Dendrogram[Double, NumericDataPoint]("Distance")
+  def cluster(): Dendrogram[NumericDataPoint] = {
+    val dnd = new Dendrogram[NumericDataPoint]("Distance")
     var d = 0.0
 
     elements.foreach { e=>
-      val c = new Cluster[Double, NumericDataPoint]()
+      val c = new Cluster[NumericDataPoint]()
       c.add(e)
       allClusters.add(c)
     }
@@ -42,7 +42,7 @@ class AverageLinkAlgorithm(
 
   private def mergeCluster(distanceThreshold: Double): Unit ={
 
-    val idxMapping = new ObjectToIndexMapping[Cluster[Double, NumericDataPoint]]
+    val idxMapping = new ObjectToIndexMapping[Cluster[NumericDataPoint]]
     val alength = adjacencyMatrix.length
 
     val nClusters = allClusters.size
@@ -83,7 +83,7 @@ class AverageLinkAlgorithm(
           allClusters.remove(ci)
           allClusters.remove(cj)
 
-          val _new = new Cluster[Double, NumericDataPoint](ci, cj)
+          val _new = new Cluster[NumericDataPoint](ci, cj)
           allClusters.add(_new)
           merged(i) = true
           merged(j) = true

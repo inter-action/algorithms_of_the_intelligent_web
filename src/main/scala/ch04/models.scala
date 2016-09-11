@@ -2,7 +2,6 @@ package iweb.ch04.models
 
 import iweb.ch04.similarity.EuclideanDistance
 
-import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
@@ -22,7 +21,8 @@ object Attribute{
 }
 
 
-trait DataPoint[T]{
+trait DataPoint{
+  type T
   val label: String
   val attrs: Array[Attribute[T]]
   val attrNames: Array[String] = Attribute.getNames(attrs)
@@ -36,7 +36,8 @@ trait DataPoint[T]{
   override def toString = s"${label} ( ${attrs.map(_.toString()).mkString("\n")} )"
 }
 
-case class NumericDataPoint(label: String, attrs: Array[Attribute[Double]]) extends DataPoint[Double]{
+case class NumericDataPoint(label: String, attrs: Array[Attribute[Double]]) extends DataPoint{
+  type T = Double
   def this(label: String, values: Array[Double]){
     this(label, Attribute.createAttributes(values))
   }
@@ -49,7 +50,7 @@ case class NumericDataPoint(label: String, attrs: Array[Attribute[Double]]) exte
 
 
 // todo: whether change elements to immutable objects
-case class Cluster[T, U <: DataPoint[T]](
+case class Cluster[U <: DataPoint](
                     label: String = "",
                     elements: scala.collection.mutable.Set[U] = mutable.LinkedHashSet.empty[U]){
 
@@ -58,7 +59,7 @@ case class Cluster[T, U <: DataPoint[T]](
     this(label, mutable.LinkedHashSet.empty[U] ++ elements)
   }
 
-  def this(c1: Cluster[T, U]*){
+  def this(c1: Cluster[U]*){
     this("",
       c1.foldLeft(mutable.LinkedHashSet.empty[U]){ (acc, c) =>
         acc ++ c.elements
@@ -70,7 +71,7 @@ case class Cluster[T, U <: DataPoint[T]](
 
   def getDimensionCount = if (elements.isEmpty) 0 else elements.iterator.next().getAttributeCount
 
-  def add(cluster: Cluster[T, U]):Unit = {
+  def add(cluster: Cluster[U]):Unit = {
     elements ++= cluster.elements
   }
 
@@ -78,16 +79,16 @@ case class Cluster[T, U <: DataPoint[T]](
     elements += e
   }
 
-  def contains(c: Cluster[T, U]) = elements.intersect(c.elements).size != 0
+  def contains(c: Cluster[U]) = elements.intersect(c.elements).size != 0
 
   def contains(e: U) = elements.contains(e)
 
-  def getElements: mutable.Set[DataPoint[T]] = mutable.LinkedHashSet.empty[DataPoint[T]] ++ elements
+  def getElements: mutable.Set[DataPoint] = mutable.LinkedHashSet.empty[DataPoint] ++ elements
 
   override def toString = s"${elements.mkString(",\n")} \n ${label}"
 
   // def copy: Cluster ?, elements need to be copied?
   // can copy be overrided ?
-  override def clone(): Cluster[T, U] = Cluster(label, mutable.LinkedHashSet.empty ++ elements)
+  override def clone(): Cluster[U] = Cluster(label, mutable.LinkedHashSet.empty ++ elements)
 
 }
