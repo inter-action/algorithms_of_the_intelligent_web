@@ -37,4 +37,4 @@ scalacOptions ++= Seq(
     "-Yno-adapted-args"
 )
 
-initialCommands := "import iweb.ch04.similarity._"
+initialCommands := "import iweb.ch04._"

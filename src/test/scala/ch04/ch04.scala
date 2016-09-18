@@ -1,6 +1,7 @@
 package iweb.ch04
 
 import iweb.ch04.models.{Attribute, NumericDataPoint, Cluster}
+import iweb.ch04.rock.SimilarCluster
 import iweb.ch04.utils.TermFrequencyBuilder
 import org.scalatest.{Matchers, FlatSpec}
 
@@ -62,5 +63,11 @@ class OtherSpec extends FlatSpec with Matchers {
     ndp.attrs(0) = Attribute("height", 40)
 
     dp.attrs(0).value shouldBe 30
+  }
+
+  "sort" should "work for List SimilarityCluster" in {
+    val ls = List(SimilarCluster(2, 3.0), SimilarCluster(3, 4.0))
+    val nls = ls.sorted
+    nls(0).clusterKey shouldBe 3
   }
 }

@@ -28,8 +28,6 @@ trait DataPoint{
   val attrNames: Array[String] = Attribute.getNames(attrs)
   val values: Array[T]
 
-  def getR: Double
-
   def getAttributeCount:Int = attrs.length
   // only print values of attrs
   def toShortString = s"${label} ( ${attrs.map(_.value.toString).mkString("\n")} )"
@@ -42,9 +40,22 @@ case class NumericDataPoint(label: String, attrs: Array[Attribute[Double]]) exte
     this(label, Attribute.createAttributes(values))
   }
 
+  def getR: Double = EuclideanDistance.getDistance(new Array[Double](attrs.length), values)
+
   override val values:Array[Double] = Attribute.getValues(attrs)
-  override def getR: Double = EuclideanDistance.getDistance(new Array[Double](attrs.length), values)
+
   override def clone(): NumericDataPoint = NumericDataPoint(label, attrs.map( _.copy[Double]() ))
+}
+//todo:
+case class WordDataPoint(label: String, attrs: Array[Attribute[String]]) extends DataPoint{
+  type T = String
+
+  def this(label: String, values: Array[String]){
+    this(label, Attribute.createAttributes(values))
+  }
+
+  override val values:Array[String] = Attribute.getValues(attrs)
+  override def clone(): WordDataPoint = WordDataPoint(label, attrs.map( _.copy[T]() ))
 }
 
 
@@ -83,7 +94,7 @@ case class Cluster[U <: DataPoint](
 
   def contains(e: U) = elements.contains(e)
 
-  def getElements: mutable.Set[DataPoint] = mutable.LinkedHashSet.empty[DataPoint] ++ elements
+  def getElements: mutable.Set[U] = mutable.LinkedHashSet.empty[U] ++ elements
 
   override def toString = s"${elements.mkString(",\n")} \n ${label}"
 

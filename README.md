@@ -33,7 +33,7 @@ val inside this constructor:
         this(initialCentroids, dataPoints)
       }
         
-      //instead you write
+      //instead you write, similiar pattern, `LinkMatrix`
       def this(k: Int, dataPoints: Array[NumericDataPoint]){
         this(KMeansAlgorithm.pickInitialCentroids(k, dataPoints), dataPoints)
       }
@@ -90,5 +90,11 @@ now I change it to:
 this shows Specify type on Trait or Abstract class may not be a good practice.
 
 
+## intelliJ IDE
 
+cmd+alt + left/right arrow #navigation
+cmd+y # peak defination
+
+## todos:
+iweb.ch04.rock.ROCKAlgorithm is not workable, figure how ROCKAlgorithm works, then make it work.
 
