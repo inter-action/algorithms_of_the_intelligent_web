@@ -1,6 +1,6 @@
 package iweb.ch04.similarity.hierarchical
 
-import iweb.ch04.models.{DataPoint, Cluster}
+import iweb.ch04.models.{Cluster, DataPoint}
 
 import scala.collection.mutable
 

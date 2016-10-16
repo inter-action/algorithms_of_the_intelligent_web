@@ -1,8 +1,8 @@
 package iweb.ch04.rock
 
-import iweb.ch04.models.{WordDataPoint, Cluster}
-import iweb.ch04.similarity.{JaccardCoefficient, SimilarityMeasure}
+import iweb.ch04.models.{Cluster, WordDataPoint}
 import iweb.ch04.similarity.hierarchical.Dendrogram
+import iweb.ch04.similarity.{JaccardCoefficient, SimilarityMeasure}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

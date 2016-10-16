@@ -1,7 +1,8 @@
 package com.github.interaction.algorithms_of_the_intelligent_web
 
-import collection.mutable.Stack
 import org.scalatest._
+
+import scala.collection.mutable.Stack
 
 class ExampleSpec extends FlatSpec with Matchers {
 

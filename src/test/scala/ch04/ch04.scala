@@ -1,9 +1,9 @@
 package iweb.ch04
 
-import iweb.ch04.models.{Attribute, NumericDataPoint, Cluster}
+import iweb.ch04.models.{Attribute, Cluster, NumericDataPoint}
 import iweb.ch04.rock.SimilarCluster
 import iweb.ch04.utils.TermFrequencyBuilder
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 import scala.collection.mutable
 

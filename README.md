@@ -98,3 +98,9 @@ cmd+y # peak defination
 ## todos:
 iweb.ch04.rock.ROCKAlgorithm is not workable, figure how ROCKAlgorithm works, then make it work.
 
+
+## Links
+[various clustering algorithms](http://scikit-learn.org/stable/modules/clustering.html)
+[scikit-learn user guide]http://scikit-learn.org/stable/user_guide.html
+
+

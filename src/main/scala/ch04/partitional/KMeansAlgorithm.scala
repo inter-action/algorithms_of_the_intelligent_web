@@ -5,7 +5,7 @@ package iweb.ch04.similarity.partitional
 
 import java.util
 
-import iweb.ch04.models.{Attribute, Cluster, NumericDataPoint}
+import iweb.ch04.models.{Cluster, NumericDataPoint}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
