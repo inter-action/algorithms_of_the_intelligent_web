@@ -5,6 +5,7 @@ import java.util
 import iweb.ch04.models.{Cluster, WordDataPoint}
 import iweb.ch04.similarity.SimilarityMeasure
 import iweb.ch04.utils.ObjectToIndexMapping
+import org.slf4j.LoggerFactory
 
 /*
 todo:
@@ -20,6 +21,8 @@ todo:
   * @param threshold
   */
 class LinkMatrix(points: Array[WordDataPoint], similarityMatrix: Array[Array[Double]], threshold: Double) {
+  private val logger = LoggerFactory.getLogger(this.getClass)
+  
   private val objToIndexMapping = new ObjectToIndexMapping[WordDataPoint]
   // link counts result matrix
   // link counts result matrix
@@ -97,19 +100,19 @@ class LinkMatrix(points: Array[WordDataPoint], similarityMatrix: Array[Array[Dou
 
   def printSimilarityMatrix(): Unit = {
 
-    println("Point Similarity matrix:")
+    logger.info("Point Similarity matrix:")
     similarityMatrix.foreach(util.Arrays.toString(_))
   }
 
   def printPointNeighborMatrix(): Unit = {
 
-    println(s"Point Neighbor matrix (threshold=${this.threshold}):")
+    logger.info(s"Point Neighbor matrix (threshold=${this.threshold}):")
     pointNeighborMatrix.foreach(util.Arrays.toString(_))
   }
 
   def printPointLinkMatrix(): Unit = {
 
-    println(s"Point Link matrix (threshold=${this.threshold}):")
+    logger.info(s"Point Link matrix (threshold=${this.threshold}):")
     pointLinkMatrix.foreach(util.Arrays.toString(_))
   }
 }

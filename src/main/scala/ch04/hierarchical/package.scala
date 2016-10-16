@@ -1,6 +1,7 @@
 package iweb.ch04.similarity.hierarchical
 
 import iweb.ch04.models.{Cluster, DataPoint}
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 
@@ -29,6 +30,8 @@ class ClusterSet[U <: DataPoint] {
 
 
 class Dendrogram[U <: DataPoint](levelLabelName: String) {
+  private val logger = LoggerFactory.getLogger(this.getClass)
+  
   private val entryMap = mutable.Map.empty[Int, ClusterSet[U]]
   private val labelMap = mutable.Map.empty[Int, String]
   private var nextLevel = 1
@@ -82,19 +85,17 @@ class Dendrogram[U <: DataPoint](levelLabelName: String) {
   def getClustersForLevel(level: Int): Option[Seq[Cluster[U]]] =
     entryMap.get(level).map(_.getAllCluster.toSeq)
 
-  //_.getAllCluster.toSeq
-
   def print(level: Int): Unit ={
     (labelMap.get(level), entryMap.get(level)) match {
       case (Some(label), Some(clusters)) =>
-        println(s"Clusters for: level=${level}, levelLabelName=${levelLabelName}, label=${label}")
+        logger.info(s"Clusters for: level=${level}, levelLabelName=${levelLabelName}, label=${label}")
         for (c <- clusters.getAllCluster if c.getElements.size > 1){
-          println("------------------------\n")
-          println(c.toString)
-          println("------------------------\n\n")
+          logger.info("------------------------\n")
+          logger.info(c.toString)
+          logger.info("------------------------\n\n")
         }
       case _ =>
-        println( s"no elements found for this level : ${level}")
+        logger.info( s"no elements found for this level : ${level}")
     }
   }
 

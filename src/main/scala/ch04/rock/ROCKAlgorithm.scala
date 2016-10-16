@@ -3,6 +3,7 @@ package iweb.ch04.rock
 import iweb.ch04.models.{Cluster, WordDataPoint}
 import iweb.ch04.similarity.hierarchical.Dendrogram
 import iweb.ch04.similarity.{JaccardCoefficient, SimilarityMeasure}
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -12,6 +13,7 @@ class ROCKAlgorithm(points: Array[WordDataPoint],
                     k: Int,
                     threshold: Double,
                     similarityMeasure: SimilarityMeasure) {
+  private val logger = LoggerFactory.getLogger(this.getClass)
   private val linkMatrix = new LinkMatrix(points, similarityMeasure, threshold)
 
   def cluster(): Dendrogram[WordDataPoint] = {
@@ -35,7 +37,7 @@ class ROCKAlgorithm(points: Array[WordDataPoint],
         dnd.addLevel(g.toString, allClusters.getAllClusters())
       }
     }
-    println(s"Number of clusters: ${allClusters.getAllClusters().size}")
+    logger.info(s"Number of clusters: ${allClusters.getAllClusters().size}")
     dnd
   }
 }

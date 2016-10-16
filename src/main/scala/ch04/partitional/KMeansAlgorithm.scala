@@ -6,6 +6,7 @@ package iweb.ch04.similarity.partitional
 import java.util
 
 import iweb.ch04.models.{Cluster, NumericDataPoint}
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -19,6 +20,7 @@ import scala.util.Random
 class KMeansAlgorithm(
                        allCentroids: Array[NumericDataPoint],
                        dataPoints: Array[NumericDataPoint]) {
+  private val logger = LoggerFactory.getLogger(this.getClass)
   private val k = allCentroids.length
   private val allClusters = new Array[Cluster[NumericDataPoint]](k)
 
@@ -65,18 +67,18 @@ class KMeansAlgorithm(
     }
   }
   def print(): Unit ={
-    println("Clusters:")
-    allClusters.foreach( e=> println(e.toString))
+    logger.info("Clusters:")
+    allClusters.foreach( e=> logger.info(e.toString))
   }
 
   def printMeans(): Unit ={
-    println("Cluster Means: ")
-    allCentroids.foreach( e=> println(e.toString))
+    logger.info("Cluster Means: ")
+    allCentroids.foreach( e=> logger.info(e.toString))
   }
 
   def printAll(): Unit ={
     print()
-    println("___________________________________________________")
+    logger.info("___________________________________________________")
     printMeans()
   }
 
