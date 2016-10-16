@@ -30,7 +30,9 @@ scalacOptions ++= Seq(
     "-language:implicitConversions",
     "-language:experimental.macros",
     "-unchecked",
-    "-Xfatal-warnings",
+    //https://github.com/HairyFotr/linter/issues/23
+    // it break pulish to local
+//    "-Xfatal-warnings",
     "-Xlint",// Enable recommended additional warnings.
     "-Yinline-warnings",
     "-Ywarn-dead-code",

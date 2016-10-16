@@ -90,6 +90,11 @@ now I change it to:
 this shows Specify type on Trait or Abstract class may not be a good practice.
 
 
+## sbt
+
+    >publishLocal #publish artifact to ivy local repository
+
+
 ## intelliJ IDE
 
 cmd+alt + left/right arrow #navigation

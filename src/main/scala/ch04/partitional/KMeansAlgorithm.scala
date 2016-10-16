@@ -13,13 +13,15 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 /**
-  *
+  * Kmeans 就是先选定allCentroids特征点, 然后根据allCentroids特征点重新计算中心点(平均的方式)
+  * 如果每次计算, 新的中心点在不断变动，就继续，直到中心点不在变动为止
   * @param allCentroids starting values for the centroids of each cluster.
   * @param dataPoints
   */
 class KMeansAlgorithm(
                        allCentroids: Array[NumericDataPoint],
                        dataPoints: Array[NumericDataPoint]) {
+
   private val logger = LoggerFactory.getLogger(this.getClass)
   private val k = allCentroids.length
   private val allClusters = new Array[Cluster[NumericDataPoint]](k)
@@ -138,28 +140,28 @@ object KMeansAlgorithm {
   def pickInitialCentroids(k: Int, data: Array[NumericDataPoint]): Array[NumericDataPoint] = {
 
     // Calculate random mean values for each cluster based on the data
-    /**
-      * TODO: 4.2 -- Selecting the means for seeding
-      *
-      * In large datasets, the selection of the initial centroids can be
-      * important from a computational (time) complexity perspective.
-      *
-      * In general, how can we improve the seeding of the initial mean values?
-      * For example, consider the following heuristic:
-      *
-      * 1. pick randomly one node
-      * 2. calculate the distance between that node and O (10*k) other nodes
-      * 3. sort the list of nodes according to their distance from the first node
-      * 4. pick every 10th node in the sequence
-      * 5. calculate the mean distance between each one of these nodes and the original node
-      *
-      * This algorithmic choice is as ad hoc as they come, however, it does have
-      * some key principles embedded in it? What are these principles?
-      * How can you generalize this algorithm?
-      *
-      * Discuss advantages/disadvantages of the initial seeding with your friends.
-      *
-      */
+    /*
+    * TODO: 4.2 -- Selecting the means for seeding
+    *
+    * In large datasets, the selection of the initial centroids can be
+    * important from a computational (time) complexity perspective.
+    *
+    * In general, how can we improve the seeding of the initial mean values?
+    * For example, consider the following heuristic:
+    *
+    * 1. pick randomly one node
+    * 2. calculate the distance between that node and O (10*k) other nodes
+    * 3. sort the list of nodes according to their distance from the first node
+    * 4. pick every 10th node in the sequence
+    * 5. calculate the mean distance between each one of these nodes and the original node
+    *
+    * This algorithmic choice is as ad hoc as they come, however, it does have
+    * some key principles embedded in it? What are these principles?
+    * How can you generalize this algorithm?
+    *
+    * Discuss advantages/disadvantages of the initial seeding with your friends.
+    *
+    */
 
     val random = new Random()
     val results = new Array[NumericDataPoint](k)

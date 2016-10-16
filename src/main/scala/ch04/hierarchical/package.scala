@@ -89,10 +89,12 @@ class Dendrogram[U <: DataPoint](levelLabelName: String) {
     (labelMap.get(level), entryMap.get(level)) match {
       case (Some(label), Some(clusters)) =>
         logger.info(s"Clusters for: level=${level}, levelLabelName=${levelLabelName}, label=${label}")
+        var i = 0
         for (c <- clusters.getAllCluster if c.getElements.size > 1){
-          logger.info("------------------------\n")
+          logger.info(s"start: Cluster No.${i}------------------------\n")
           logger.info(c.toString)
-          logger.info("------------------------\n\n")
+          logger.info(s"end: Cluster No.${i}------------------------\n")
+          i += 1
         }
       case _ =>
         logger.info( s"no elements found for this level : ${level}")

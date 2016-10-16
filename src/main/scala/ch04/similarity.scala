@@ -53,7 +53,7 @@ object CosineSimilarity extends SimilarityMeasure {
   }
 
   def sim(x: Array[Double], y: Array[Double]): Double = {
-    val docProduct = x.indices.foldLeft(0.0) { (acc, idx) =>
+    val docProduct = x.indices.foldLeft(0.0) { (acc, idx) => // docProduct is the term in both x document & y document
       acc + x(idx) * y(idx)
     }
 
